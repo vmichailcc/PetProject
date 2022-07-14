@@ -5,12 +5,13 @@ django.setup()
 import requests
 import json
 from store.models import ProductCard, Category, Pictures
+from pet.hidden_data import auth_data
 
 
 def data_input():
     response = {}
     auth_url = "https://office.hubber.pro/api/v1/auth"
-    url_response = requests.get(url=auth_url, auth=("primisshop1@gmail.com", "141215Cc2513")).json()
+    url_response = requests.get(url=auth_url, auth=auth_data).json()
     token = url_response['token']
     # print(url_response)
     headers = {
@@ -21,9 +22,9 @@ def data_input():
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 1
-    while r_status == 200 and page_number < 4:
-    # if r_status == 200:
+    page_number = 3
+    # while r_status == 200 and page_number < 4:
+    if r_status == 200:
         product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}"
         page_number += 1
         product_response = requests.get(url=product_url, headers=headers)

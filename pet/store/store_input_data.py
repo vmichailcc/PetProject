@@ -22,10 +22,10 @@ def data_input():
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 3
+    page_number = 6
     # while r_status == 200 and page_number < 4:
     if r_status == 200:
-        product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}"
+        product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
         page_number += 1
         product_response = requests.get(url=product_url, headers=headers)
         r_status = product_response.status_code
@@ -58,7 +58,7 @@ def data_input():
             # print(product)
             product.save()
 
-            print(data.get("pictures"))
+            # print(data.get("pictures"))
             for input_image in data.get("pictures"):
                 image = Pictures(
                     pictures_point=product,
@@ -66,8 +66,8 @@ def data_input():
                 )
                 image.save()
                 # print("Image =", image)
-            print(category)
-            print(product)
+            # print(category)
+            # print(product)
             count += 1
         response['status'] = 201
         response['message'] = 'success'

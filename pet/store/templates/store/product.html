@@ -4,11 +4,59 @@
 
 {% block content %}
 
-<h2>Product detail:</h2>
-<br>
-<div>
-    <h2>{{ product.name }}</h2>
+<div class="card " style="max-width: 80%;">
+  <div class="row g-0">
+      <div >
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{{ product.main_picture }}" class="d-block w-100" alt="..." width="240">
+            </div>
+              {% for picture in pictures %}
 
-</div>
+            <div class="carousel-item">
+              <img src="{{ picture.pictures }}" class="d-block" alt="..." width="240">
+            </div>
+              {% endfor %}
+
+
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description|safe }}</p>
+        <p class="card-text">
+            {% if product.availability == 1 %}
+                <h6 style="color: green">В наявності</h6>
+            {% else %}
+                <p style="color: red">Не має в наявності</p>
+            {% endif %}
+            </p>
+          {% if product.price < product.old_price %}
+            <ul class=" ">
+                <li class="list-group-item" style="text-decoration: line-through; color:#a0a0a0"><h6>{{ product.old_price }} грн.</h6></li>
+                <li class="list-group-item" style="color:red"><h4>{{ product.price }} грн.</h4></li>
+            </ul>
+            {% else %}
+            <ul class="">
+              <li class="list-group-item"><h6>&#8194</h6></li>
+              <li class="list-group-item"><h4>{{ product.price }} грн.</h4></li>
+            </ul>
+            {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+
 
 {% endblock content %}

@@ -15,8 +15,9 @@ class ProductView(View):
 class ProductDetailView(View):
     def get(self, request, pk):
         product = get_object_or_404(ProductCard, pk=pk)
-
+        pictures = Pictures.objects.filter(pictures_point=pk)
         context = {
             "product": product,
+            "pictures": pictures,
         }
         return render(request, "store/product.html", context)

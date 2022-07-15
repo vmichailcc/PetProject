@@ -9,13 +9,15 @@
       <div >
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
+              {% for picture in pictures|slice:":1" %}
             <div class="carousel-item active">
-              <img src="{{ product.main_picture }}" class="d-block w-100" alt="..." width="240">
+              <img src="{{ picture.pictures }}" class="d-block" alt="..." width="800">
             </div>
-              {% for picture in pictures %}
+                {% endfor %}
 
+              {% for picture in pictures|slice:"1:" %}
             <div class="carousel-item">
-              <img src="{{ picture.pictures }}" class="d-block" alt="..." width="240">
+              <img src="{{ picture.pictures }}" class="d-block" alt="..." width="800">
             </div>
               {% endfor %}
 

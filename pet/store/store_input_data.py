@@ -22,9 +22,10 @@ def data_input():
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 6
-    # while r_status == 200 and page_number < 4:
+    page_number = 3
+    # while r_status == 200:
     if r_status == 200:
+
         product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
         page_number += 1
         product_response = requests.get(url=product_url, headers=headers)
@@ -40,24 +41,25 @@ def data_input():
             )
             category.save()
             #print(category)
-
-            product = ProductCard(
-                id=data.get("id"),
-                name=data.get("name"),
-                category_id=data.get("category_id"),
-                vendor_code=data.get("vendor_code"),
-                price=data.get("price"),
-                old_price=data.get("old_price"),
-                availability=data.get("availability"),
-                description=data.get("description"),
-                brand=data.get("brand"),
-                main_picture=data.get("main_picture"),
-                options=data.get("options"),
-                attributes=data.get("attributes"),
-            )
-            # print(product)
-            product.save()
-
+            try:
+                product = ProductCard(
+                    id=data.get("id"),
+                    name=data.get("name"),
+                    category_id=data.get("category_id"),
+                    vendor_code=data.get("vendor_code"),
+                    price=data.get("price"),
+                    old_price=data.get("old_price"),
+                    availability=data.get("availability"),
+                    description=data.get("description"),
+                    brand=data.get("brand"),
+                    main_picture=data.get("main_picture"),
+                    options=data.get("options"),
+                    attributes=data.get("attributes"),
+                )
+                # print(product)
+                product.save()
+            except ValueError:
+                print(f"Error in {data.get('name')}")
             # print(data.get("pictures"))
             for input_image in data.get("pictures"):
                 image = Pictures(

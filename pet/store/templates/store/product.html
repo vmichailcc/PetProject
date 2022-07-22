@@ -35,8 +35,8 @@
       </div>
       <div class="card-body">
         <h5 class="card-title">{{ product.name }}</h5>
-        <p class="card-text">{{ product.description|safe }}</p>
-        <p class="card-text">
+          <h6>Виробник: {{ product.brand }}</h6>
+                  <p class="card-text">
             {% if product.availability == 1 %}
                 <h6 style="color: green">В наявності</h6>
             {% else %}
@@ -54,11 +54,42 @@
               <li class="list-group-item"><h4>{{ product.price }} грн.</h4></li>
             </ul>
             {% endif %}
+        <p class="card-text">{{ product.description|safe }}</p>
+          <div>
+
+              {% if product.attributes != None %}
+              <h4>Особливості:</h4>
+                {% for item in product.attributes %}
+                 <ul>{% for key, value in item.items %}
+
+                        {% if key == "name" %}
+                         {{ value }}:
+                        {%endif%}
+                        {% if key == "values" %}
+                            {% for value_data in value %}
+
+                                {% for key, value in value_data.items %}
+                                    {% if key == "value" %}
+                                     {{ value }}
+                                    {%endif%}
+                                {% endfor %}
+                            {% endfor %}
+                        {%endif%}
+                        {% endfor %}
+                 </ul>
+                 {% endfor %}
+              {% endif %}
+          </div>
+
+          <div>
+              <h4>Опції:</h4>
+                 {% for key, value in product.options.items %}
+                    <ul>{{ key }}: {{ value }}</ul>
+                 {% endfor %}
+          </div>
       </div>
     </div>
   </div>
-
-
 
 
 {% endblock content %}

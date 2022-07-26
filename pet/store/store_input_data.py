@@ -14,15 +14,18 @@ def data_input():
     url_response = requests.get(url=auth_url, auth=auth_data).json()
     token = url_response['token']
     # print(url_response)
+    #print(token)
     headers = {
-        'Authorization': f"Bearer {token}"}
+        'Authorization': f"Bearer {token}",
+        "accept-language": "uk-UA",
+    }
     product_url = "http://office.hubber.pro/ru/api/v1/product"
     product_response = requests.get(url=product_url, headers=headers)
     r_status = product_response.status_code
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 3
+    page_number = 1
     # while r_status == 200:
     if r_status == 200:
 
@@ -34,14 +37,15 @@ def data_input():
         upload_data_str = json.dumps(products_response)
         upload_data = json.loads(upload_data_str)
         for data in upload_data:
-            #print(data)
-            category = Category(
-                category_id=data.get("category_id"),
-                category_name=data.get("category_name"),
-            )
-            category.save()
-            #print(category)
-            try:
+            if data.get("name") != None:
+                #print(data)
+                category = Category(
+                    category_id=data.get("category_id"),
+                    category_name=data.get("category_name"),
+                )
+                category.save()
+                #print(category)
+
                 product = ProductCard(
                     id=data.get("id"),
                     name=data.get("name"),
@@ -58,19 +62,22 @@ def data_input():
                 )
                 # print(product)
                 product.save()
-            except ValueError:
-                print(f"Error in {data.get('name')}")
-            # print(data.get("pictures"))
-            for input_image in data.get("pictures"):
-                image = Pictures(
-                    pictures_point=product,
-                    pictures=input_image,
-                )
-                image.save()
-                # print("Image =", image)
-            # print(category)
-            # print(product)
-            count += 1
+                # print(f"Error in {data.get('name')}")
+                # print(data.get("pictures"))
+                for input_image in data.get("pictures"):
+                    image = Pictures(
+                        pictures_point=product,
+                        pictures=input_image,
+                    )
+                    image.save()
+                    # print("Image =", image)
+                # print(category)
+                # print(product)
+                count += 1
+                print(count)
+            else:
+                print(data.get("name"))
+                pass
         response['status'] = 201
         response['message'] = 'success'
         response['count'] = count

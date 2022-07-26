@@ -1,6 +1,7 @@
 #hidden data
 hidden_data.py
 archive
+migrations
 # Django #
 *.log
 *.pot

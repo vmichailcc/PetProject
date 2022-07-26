@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-from .hidden_data import postgresql_data, django_secret_key
+from .hidden_data import postgresql_data, django_secret_key, email_password
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,3 +127,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# EMail
+EMAIL_HOST = "smtp.ukr.net"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "primisshop@ukr.net"
+EMAIL_HOST_PASSWORD = email_password
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+

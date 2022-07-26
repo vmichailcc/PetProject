@@ -25,9 +25,9 @@ def data_input():
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 1
-    # while r_status == 200:
-    if r_status == 200:
+    page_number = 3
+    while r_status == 200:
+    # if r_status == 200:
 
         product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
         page_number += 1

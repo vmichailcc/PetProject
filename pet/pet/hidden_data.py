@@ -1,7 +1,7 @@
 postgresql_data = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pet32_db',
+        'NAME': 'pet3_5_db',
         'USER': 'postgres',
         'PASSWORD': '141215',
         'HOST': '127.0.0.1',

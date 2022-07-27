@@ -63,7 +63,7 @@ class UserManager(BaseUserManager):
         Create and save a user with the given username, email, and password.
         """
         if not email:
-            raise ValueError("The given username must be set")
+            raise ValueError("The given email must be set")
         username = None
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -90,8 +90,9 @@ class UserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     city = models.CharField(verbose_name="Місто", max_length=100)
     email = models.EmailField(max_length=254, unique=True)
-    username = models.EmailField(max_length=254, null=True)
+    username = models.CharField(max_length=254, null=True)
     email_verify = models.BooleanField(default=False)
+    send_email = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

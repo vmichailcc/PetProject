@@ -128,11 +128,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-# EMail
-EMAIL_HOST = "smtp.ukr.net"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "primisshop@ukr.net"
-EMAIL_HOST_PASSWORD = email_password
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+# EMail ukr.net
+# EMAIL_HOST = "smtp.ukr.net"
+# EMAIL_PORT = 465 #2525
+# EMAIL_HOST_USER = "primisshop@ukr.net"
+# EMAIL_HOST_PASSWORD = email_password
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = "primisshop@ukr.net"
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

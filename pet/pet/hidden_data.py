@@ -13,4 +13,6 @@ django_secret_key = 'django-insecure-$guem6z%qgl$dvi)6c%=vxr2&6s(5vb8&04e(fj3zk3
 
 auth_data = ("primisshop1@gmail.com", "141215Cc2513")
 
-email_password = "852963Ka"
+# email_password = "852963Ka"
+email_password = "sKTiOGhpESWfTFyH"
+

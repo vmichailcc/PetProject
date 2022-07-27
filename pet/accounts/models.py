@@ -88,6 +88,8 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+    first_name = models.CharField(verbose_name="Ім'я", max_length=100)
+    last_name = models.CharField(verbose_name="Прізвище", max_length=100)
     city = models.CharField(verbose_name="Місто", max_length=100)
     email = models.EmailField(max_length=254, unique=True)
     username = models.CharField(max_length=254, null=True)
@@ -98,3 +100,8 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    def __str__(self):
+        return str(self.first_name) + ' ' + str(self.last_name)
+
+

@@ -74,5 +74,10 @@ class ProductComment(models.Model):
                                      verbose_name="text_product",
                                      related_name='text_product'
                                      )
-
+    text_author = models.ForeignKey(CustomUser,
+                                    on_delete=models.CASCADE,
+                                    verbose_name="text_author",
+                                    related_name='text_author'
+                                    )
     text = models.TextField(verbose_name="Комментар", max_length=1000)
+    text_created_at = models.DateTimeField(verbose_name="Час створення", auto_now_add=True)

@@ -1,16 +1,15 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404
 from .models import ProductCard, ProductComment, Pictures
 from django.views.generic.base import View
 from .forms import AddProductComment
 
 
-class ProductView(View):
-    def get(self, request):
-        products = ProductCard.objects.all()
-        context = {
-            "products": products,
-        }
-        return render(request, "store/index.html", context)
+class ProductView(ListView):
+    model = ProductCard
+    template_name = "store/index.html"
+    context_object_name = "products"
+    paginate_by = 20
 
 
 class ProductDetailView(View):

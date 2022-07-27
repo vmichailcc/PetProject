@@ -130,7 +130,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # EMail ukr.net
 # EMAIL_HOST = "smtp.ukr.net"
-# EMAIL_PORT = 465 #2525
+# EMAIL_PORT = 465  #2525 or 465
 # EMAIL_HOST_USER = "primisshop@ukr.net"
 # EMAIL_HOST_PASSWORD = email_password
 # EMAIL_USE_TLS = False

@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from accounts.models import CustomUser
 
 
 class ProductCard(models.Model):
@@ -20,6 +21,7 @@ class ProductCard(models.Model):
     options = models.JSONField(verbose_name="Опції", blank=True, null=True)
     attributes = models.JSONField(verbose_name="Атрибути", blank=True, null=True)
     card_views = models.IntegerField(verbose_name="Перегляди", default=0)
+    like = models.IntegerField(verbose_name="Лайк", default=0)
 
     def __str__(self):
         return self.name
@@ -64,3 +66,17 @@ class Pictures(models.Model):
     class Meta:
         verbose_name = "Зображення"
         verbose_name_plural = "Зображення"
+
+
+class ProductComment(models.Model):
+    text_product = models.ForeignKey(ProductCard,
+                                     on_delete=models.CASCADE,
+                                     verbose_name="text_product",
+                                     related_name='text_product'
+                                     )
+    text_author = models.ForeignKey(CustomUser,
+                                    on_delete=models.CASCADE,
+                                    verbose_name="text_author",
+                                    related_name='text_author'
+                                    )
+    text = models.TextField(verbose_name="Комментар", default=0)

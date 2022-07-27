@@ -25,7 +25,7 @@ def data_input():
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 1
+    page_number = 55
     # while r_status == 200:
     if r_status == 200:
 

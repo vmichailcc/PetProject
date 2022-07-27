@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import ProductCard, Category, Pictures
+from .models import ProductCard, Category, Pictures, ProductComment
 
 
 class ProductCardAdmin(admin.ModelAdmin):
@@ -22,6 +22,7 @@ class ProductCardAdmin(admin.ModelAdmin):
 admin.site.register(ProductCard, ProductCardAdmin)
 admin.site.register(Category)
 admin.site.register(Pictures)
+admin.site.register(ProductComment)
 
 admin.site.site_title = "STORE Адмін панель"
 admin.site.site_header = "STORE Адмін панель"

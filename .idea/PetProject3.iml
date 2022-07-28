@@ -9,6 +9,8 @@
       <sourceFolder url="file://$MODULE_DIR$/pet/templates" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pet/accounts" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/pet/media/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/pet/archive" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -86,9 +86,8 @@ class VerifyEmail(View):
 
 class UpdateUserView(UpdateView):
     model = CustomUser
-
     fields = ['first_name', 'last_name', 'city']
-    template_name = 'accounts/profile.html'
+    template_name = 'profile'
 
-    # def get_queryset(self):
-    #     return CustomUser.objects.filter(id=self.request.user.id)
+    def get_queryset(self):
+        return CustomUser.objects.filter(pk=self.request.user.pk)

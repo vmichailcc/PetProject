@@ -1,5 +1,5 @@
 {% extends  "base.html" %}
-
+{% load  static %}
 {% block title %} {{ product.name }} {% endblock title %}
 
 {% block content %}
@@ -95,8 +95,8 @@
           </div>
           <div>
               {% load static %}
-              <img src="{% static 'images/like.png' %}">
-                Кількість лайків - {{ product.like }}
+              <img src="{% static 'store/images/like.png' %}" width="50"
+   height="50"> {{ product.like }}
           </div>
           <a href="{% url 'index' %}" class="card-link">Всі товари</a>
       </div>

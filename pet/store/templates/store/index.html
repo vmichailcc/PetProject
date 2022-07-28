@@ -15,8 +15,8 @@
           {% for product in products %}
 
           <div class="card" style="width: 16rem;">
-              {% load thumbnail %}
-            {% thumbnail "https://image.hubber.pro/49e7f3be13162817606f7d3fea4840fe.jpg" "40x40" crop="80% top" as im %}
+            {% load thumbnail %}
+            {% thumbnail "product.main_picture" "100x100" crop="center" as im %}
                 <img src="{{ im.url }}">
             {% endthumbnail %}
 

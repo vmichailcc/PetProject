@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-from .hidden_data import postgresql_data, django_secret_key, email_password
-
+# from .hidden_data import postgresql_data, django_secret_key, email_password
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

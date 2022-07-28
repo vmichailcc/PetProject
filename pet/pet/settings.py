@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "store",
     "accounts",
     "rest_framework",
+    "sorl.thumbnail",
 ]
 
 MIDDLEWARE = [

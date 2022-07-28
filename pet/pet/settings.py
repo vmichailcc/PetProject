@@ -136,6 +136,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # EMAIL_HOST_PASSWORD = email_password
 # EMAIL_USE_TLS = False
 # EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = "primisshop@ukr.net"
+# DEFAULT_FROM_EMAIL = "primisshop@ukr.net"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

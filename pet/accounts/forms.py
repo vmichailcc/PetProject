@@ -1,6 +1,9 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.exceptions import ValidationError
 
+from .utils import send_verify_email
 from .models import CustomUser
 
 
@@ -20,3 +23,29 @@ class UserRegisterForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(label="Електрона пошта", widget=forms.TextInput(attrs={'class': 'form-control'}), )
     password = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        print("username =", username)
+        print("password =", password)
+        if username is not None and password:
+            self.user_cache = authenticate(
+                self.request,
+                username=username,
+                password=password,
+            )
+            print("user_cache = ", self.user_cache)
+            if not self.user_cache.email_verify:
+                send_verify_email(self.request, self.user_cache)
+                raise ValidationError(
+                    "Електронна пошта не веріфікована. Будь ласка, перевірте пошту!",
+                    code='invalid_login',
+                )
+
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data

@@ -6,7 +6,10 @@
 
 {% block content %}
 
-
+<p>{{ user }}</p>
+<p>{{ user.first_name }}</p>
+{{ user.email }}
+<p>{{ user.email_verify }}</p>
 <div class="album py-5 bg-light">
     <div class="container">
 
@@ -14,10 +17,10 @@
 
 
           {% for product in products %}
-<img src= {{ product.main_picture }}>
+
           <div class="card" style="width: 16rem;">
-            {% load thumbnail %}
-              {% thumbnail product.main_picture "300" as im %}
+              {% load thumbnail %}
+            {% thumbnail "https://image.hubber.pro/49e7f3be13162817606f7d3fea4840fe.jpg" "40x40" crop="80% top" as im %}
                 <img src="{{ im.url }}">
             {% endthumbnail %}
 

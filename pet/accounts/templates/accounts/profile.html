@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block title %} Register {% endblock title %}
 {% block content %}
-<h3>Профіль</h3>
-<a href="{% url 'logout' %}">Вийти</a>
+<h3>Зміна данних профіля</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Зберегти">
+</form>
 
 {% endblock content %}

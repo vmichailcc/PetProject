@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "sorl.thumbnail",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     "store",
     "accounts",
     "rest_framework",
-    "sorl.thumbnail",
+
 ]
 
 MIDDLEWARE = [
@@ -122,11 +123,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
 # Место для сохранения загруженных картинок
+
+SITE_ROOT = os.path.dirname(__file__)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -140,3 +144,5 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # DEFAULT_FROM_EMAIL = "primisshop@ukr.net"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+THUMBNAIL_DEBUG = True

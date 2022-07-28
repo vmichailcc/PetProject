@@ -3,7 +3,6 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
-
 from .utils import send_verify_email
 from .models import CustomUser
 
@@ -60,4 +59,14 @@ class UserLoginForm(AuthenticationForm):
                 self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data
+
+
+class UpdateUserForm(forms.ModelForm):
+    first_name = forms.CharField(label="Ім'я", widget=forms.TextInput(attrs={'class': 'form-control'}), )
+    last_name = forms.CharField(label="Прізвище", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    city = forms.CharField(label="Місто", widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = CustomUser
+        fields = ("first_name", "last_name", "city")
 

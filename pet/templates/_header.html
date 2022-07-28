@@ -14,7 +14,7 @@
 
       {% if user.is_authenticated %}
       <div class="col-md-3 text-end">
-          <a href="{% url 'profile' %}"><button type="button" class="btn btn-outline-primary me-2">Profile</button></a>
+          <a href="{% url 'profile' %}"><button type="button" class="btn btn-outline-primary me-2">{{ user }}</button></a>
         <a href="{% url 'logout' %}"><button type="button" class="btn btn-primary">Logout</button></a>
       </div>
       {% else %}

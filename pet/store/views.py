@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404
 from .models import ProductCard, ProductComment, Pictures
 from django.views.generic.base import View
@@ -26,4 +26,5 @@ class ProductDetailView(View):
             "form": form,
         }
         return render(request, "store/product.html", context)
+
 

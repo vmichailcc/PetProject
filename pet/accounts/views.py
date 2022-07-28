@@ -2,8 +2,8 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import FormView, TemplateView
-from .forms import UserRegisterForm, UserLoginForm
+from django.views.generic import FormView, TemplateView, UpdateView
+from .forms import UserRegisterForm, UserLoginForm, UpdateUserForm
 from .utils import send_verify_email
 from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
@@ -63,10 +63,6 @@ class InvalidVerifyView(TemplateView):
     template_name = 'accounts/invalid_verify.html'
 
 
-class ProfileView(TemplateView):
-    template_name = 'accounts/profile.html'
-
-
 class VerifyEmail(View):
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
@@ -86,3 +82,13 @@ class VerifyEmail(View):
                 CustomUser.DoesNotExist, ValidationError):
             user = None
         return user
+
+
+class UpdateUserView(FormView):
+    form_class = UpdateUserForm
+    success_url = reverse_lazy('index')
+    template_name = 'accounts/profile.html'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

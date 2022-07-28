@@ -94,6 +94,8 @@
               {% endfor %}
           </div>
           <div>
+              {% load static %}
+              <img src="{% static 'images/like.png' %}">
                 Кількість лайків - {{ product.like }}
           </div>
           <a href="{% url 'index' %}" class="card-link">Всі товари</a>

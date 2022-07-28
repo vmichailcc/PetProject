@@ -7,6 +7,6 @@ urlpatterns = [
     path('register/', Register.as_view(), name='register'),
     path('invalid_verify/', InvalidVerifyView.as_view(), name='invalid_verify'),
     path('confirm_email/', ConfirmView.as_view(), name='confirm_email'),
-    path('accounts/profile/', UpdateUserView.as_view(), name='profile'),
+    path('accounts/profile', UpdateUserView.as_view(), name='profile'),
     path("verify_email/<uidb64>/<token>/", VerifyEmail.as_view(), name="verify_email"),
 ]

@@ -84,11 +84,11 @@ class VerifyEmail(View):
         return user
 
 
-class UpdateUserView(FormView):
-    form_class = UpdateUserForm
-    success_url = reverse_lazy('index')
+class UpdateUserView(UpdateView):
+    model = CustomUser
+
+    fields = ['first_name', 'last_name', 'city']
     template_name = 'accounts/profile.html'
 
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+    # def get_queryset(self):
+    #     return CustomUser.objects.filter(id=self.request.user.id)

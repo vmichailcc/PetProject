@@ -1,6 +1,13 @@
-from django.template.defaulttags import url
+
 from django.urls import path
-from .views import ProductView, ProductDetailView
+from .views import ProductView, ProductDetailView, StoreApiView, CommentApiView
+from rest_framework import routers
+
+store_router = routers.SimpleRouter()
+store_router.register('', StoreApiView, basename='store')
+
+comment_router = routers.SimpleRouter()
+comment_router.register('', CommentApiView, basename='comment')
 
 
 urlpatterns = [

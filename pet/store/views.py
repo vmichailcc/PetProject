@@ -3,6 +3,11 @@ from django.shortcuts import render, get_object_or_404
 from .models import ProductCard, ProductComment, Pictures
 from django.views.generic.base import View
 from .forms import AddProductComment
+from .serializers import ProductCardSerializer, ProductCommentSerializer
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from accounts.models import CustomUser
 
 
 class ProductView(ListView):
@@ -26,5 +31,24 @@ class ProductDetailView(View):
             "form": form,
         }
         return render(request, "store/product.html", context)
+
+
+class StoreApiView(ListModelMixin, GenericViewSet):
+    queryset = ProductCard.objects.all()
+    serializer_class = ProductCardSerializer
+
+
+class CommentApiView(ListModelMixin, CreateModelMixin, GenericViewSet):
+    queryset = ProductComment.objects.all()
+    serializer_class = ProductCommentSerializer
+
+    def perform_create(self, serializer):
+        print(self.request.user)
+        if self.request.user.is_authenticated:
+            serializer.save(**{'text_author': self.request.user})
+
+
+
+
 
 

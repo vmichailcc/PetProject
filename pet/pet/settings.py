@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "store",
     "accounts",
     "rest_framework",
+    'rest_framework.authtoken',
     "imagekit",
 ]
 
@@ -161,3 +162,11 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 THUMBNAIL_DEBUG = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+}

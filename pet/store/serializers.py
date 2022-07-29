@@ -37,4 +37,4 @@ class ProductCommentSerializer(serializers.ModelSerializer):
             "text",
             "text_created_at",
         ]
-        read_only_fields = ["text_created_at"]
+        read_only_fields = ["text_author", "text_created_at"]

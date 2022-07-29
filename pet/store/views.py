@@ -38,17 +38,29 @@ class StoreApiView(ListModelMixin, GenericViewSet):
     serializer_class = ProductCardSerializer
 
 
-class CommentApiView(ListModelMixin, CreateModelMixin, GenericViewSet):
-    queryset = ProductComment.objects.all()
+class CommentApiView(ModelViewSet):
+    queryset = ProductCard.
     serializer_class = ProductCommentSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        print(self.request.user)
         if self.request.user.is_authenticated:
             serializer.save(**{'text_author': self.request.user})
 
+    def get_queryset(self):
+        user = self.request.user
+        return ProductComment.objects.filter(text_author=user)
 
 
+class LikeApiView(ModelViewSet):
+    serializer_class = ProductCardSerializer
 
+    def perform_create(self, serializer):
+        if self.request.prod.like:
+            # like +=1
+            serializer.save(**{'like': +1 })
 
+    def get_queryset(self):
+        pk = self.request.prod
+        return ProductCard.objects.get(pk=pk)
 

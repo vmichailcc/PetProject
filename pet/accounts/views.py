@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, UpdateView
+from rest_framework.viewsets import ModelViewSet
+
 from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth import login as auth_login
 from .utils import send_verify_email
@@ -91,3 +93,5 @@ class UpdateProfileView(UpdateView):
 
 class ProfileView(TemplateView):
     template_name = 'accounts/profile.html'
+
+

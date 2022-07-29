@@ -1,9 +1,12 @@
-from django.contrib.auth import login, logout, authenticate, get_user_model
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import FormView, TemplateView, UpdateView
-from .forms import UserRegisterForm, UserLoginForm, UpdateUserForm
+from django.views.generic import TemplateView
+from .forms import UserRegisterForm, UserLoginForm
+from django.contrib.auth import login as auth_login
+
 from .utils import send_verify_email
 from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
@@ -28,8 +31,6 @@ class Register(View):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=password)
-            print(request)
-            print(user)
             send_verify_email(request, user)
             return redirect("confirm_email")
         context = {
@@ -38,15 +39,13 @@ class Register(View):
         return render(request, self.template_name, context)
 
 
-class LoginFormView(LoginView):
+class LoginUserView(LoginView):
     form_class = UserLoginForm
-    success_url = reverse_lazy('index')
     template_name = 'accounts/login.html'
 
     def form_valid(self, form):
-        self.user = form.get_user()
-        login(self.request, self.user)
-        return super().form_valid(form)
+        auth_login(self.request, form.get_user())
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class LogoutView(View):
@@ -84,10 +83,14 @@ class VerifyEmail(View):
         return user
 
 
-class UpdateUserView(UpdateView):
-    model = CustomUser
-    fields = ['first_name', 'last_name', 'city']
-    template_name = 'profile'
+# class UpdateUserView(UpdateView):
+#     model = CustomUser
+#     fields = ['first_name', 'last_name', 'city']
+#     template_name = 'profile'
+#
+#     def get_queryset(self):
+#         return CustomUser.objects.filter(pk=self.request.user.pk)
 
-    def get_queryset(self):
-        return CustomUser.objects.filter(pk=self.request.user.pk)
+class UpdateUserView(TemplateView):
+    template_name = 'accounts/profile.html'
+

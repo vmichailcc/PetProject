@@ -46,7 +46,7 @@ class CustomUser(AbstractUser):
     send_email = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = []
 
     objects = UserManager()
 

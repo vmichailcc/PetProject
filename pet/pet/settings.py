@@ -34,7 +34,6 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
-    "sorl.thumbnail",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +43,7 @@ INSTALLED_APPS = [
     "store",
     "accounts",
     "rest_framework",
-
+    "imagekit",
 ]
 
 MIDDLEWARE = [

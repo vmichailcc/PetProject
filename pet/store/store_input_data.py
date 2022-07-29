@@ -1,12 +1,11 @@
 import os
 import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet.settings')
-django.setup()
 import requests
 import json
 from store.models import ProductCard, Category, Pictures
 from pet.hidden_data import auth_data
-
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet.settings')
+django.setup()
 
 def data_input():
     response = {}
@@ -25,7 +24,7 @@ def data_input():
     # products_response = product_response.json()
     # print(products_response)
     count = 0
-    page_number = 55
+    page_number = 1
     # while r_status == 200:
     if r_status == 200:
 
@@ -56,7 +55,8 @@ def data_input():
                     availability=data.get("availability"),
                     description=data.get("description"),
                     brand=data.get("brand"),
-                    main_picture=data.get("main_picture"),
+                    main_picture=
+                    data.get("main_picture"),
                     options=data.get("options"),
                     attributes=data.get("attributes"),
                 )

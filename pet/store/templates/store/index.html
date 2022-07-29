@@ -15,10 +15,9 @@
           {% for product in products %}
 
           <div class="card" style="width: 16rem;">
-            {% load thumbnail %}
-            {% thumbnail "product.main_picture" "100x100" crop="center" as im %}
-                <img src="{{ im.url }}">
-            {% endthumbnail %}
+
+            <img src="{{ product.main_picture }}" alt="" />
+
 
             <div class="card-body">
               <a href="{% url 'product' product.id %}" style="text-decoration: none; color:black">

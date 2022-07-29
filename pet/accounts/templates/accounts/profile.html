@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block title %} Register {% endblock title %}
 {% block content %}
-<h3>Зміна данних профіля</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Зберегти">
-</form>
+<h3>Вітаю, {{ user }}! </h3>
+<br>
+<p>Ваші облікові дані:</p>
+<h4>Ім'я: {{ user.first_name }}</h4>
+<h4>Прізвище: {{ user.last_name }}</h4>
+<h4>Місто: {{ user.city }}</h4>
+<h4>Електрона пошта: {{ user.email }}</h4>
+
+<a href="{% url 'update_profile' user.pk %}" >Змінити дані</a>
 
 {% endblock content %}

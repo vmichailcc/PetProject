@@ -3,10 +3,9 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
 from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth import login as auth_login
-
 from .utils import send_verify_email
 from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
@@ -83,14 +82,12 @@ class VerifyEmail(View):
         return user
 
 
-# class UpdateUserView(UpdateView):
-#     model = CustomUser
-#     fields = ['first_name', 'last_name', 'city']
-#     template_name = 'profile'
-#
-#     def get_queryset(self):
-#         return CustomUser.objects.filter(pk=self.request.user.pk)
+class UpdateProfileView(UpdateView):
+    model = CustomUser
+    fields = ['first_name', 'last_name', 'city']
+    template_name = 'accounts/update_profile.html'
+    template_name_suffix = '_update_profile'
 
-class UpdateUserView(TemplateView):
+
+class ProfileView(TemplateView):
     template_name = 'accounts/profile.html'
-

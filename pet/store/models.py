@@ -1,7 +1,7 @@
+from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
-from django.utils.safestring import mark_safe
-from accounts.models import CustomUser
 
 
 class ProductCard(models.Model):
@@ -57,9 +57,6 @@ class Pictures(models.Model):
     )
     pictures = models.ImageField(blank=True, upload_to="uploadphoto/%d%m%Y/", verbose_name="Назва зображення")
 
-    # def __str__(self):
-    #     return self.pictures_point
-
     def get_absolute_url(self):
         return reverse("pictures", kwargs={"pk": self.pk})
 
@@ -74,10 +71,47 @@ class ProductComment(models.Model):
                                      verbose_name="text_product",
                                      related_name='text_product'
                                      )
-    text_author = models.ForeignKey(CustomUser,
+    text_author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     on_delete=models.CASCADE,
                                     verbose_name="text_author",
                                     related_name='text_author'
                                     )
     text = models.TextField(verbose_name="Комментар", max_length=1000)
     text_created_at = models.DateTimeField(verbose_name="Час створення", auto_now_add=True)
+
+
+class Order(models.Model):
+    product = models.ForeignKey(ProductCard,
+                                on_delete=models.CASCADE,
+                                verbose_name="product",
+                                related_name='product'
+                                )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE,
+                              verbose_name="owner",
+                              related_name='owner'
+                              )
+    number = models.PositiveIntegerField(verbose_name="Кількість",
+                                         default=1,
+                                         validators=[
+                                             MaxValueValidator(99),
+                                             MinValueValidator(1)
+                                         ])
+    status = models.CharField(
+        choices=(
+            ("new", "Новий"),
+            ("in progress", "В роботі"),
+            ("sent", "Відправлено"),
+            ("canceled", "Відмінено"),
+            ("completed", "Завершено"),
+        ),
+        max_length=11,
+        default="new"
+    )
+    owner_comment = models.CharField(verbose_name="Коментар покупця", max_length=500, blank=True)
+    admin_comment = models.CharField(verbose_name="Коментар від адміна", max_length=500, blank=True)
+    created_at = models.DateTimeField(verbose_name="Час створення", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Замовлення"
+        verbose_name_plural = "Замовлення"

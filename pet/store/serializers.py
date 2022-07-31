@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from store.models import ProductCard, ProductComment
+from store.models import ProductCard, ProductComment, Order
 
 
 class ProductCardSerializer(serializers.ModelSerializer):
@@ -38,3 +38,19 @@ class ProductCommentSerializer(serializers.ModelSerializer):
             "text_created_at",
         ]
         read_only_fields = ["text_author", "text_created_at"]
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = [
+            "product",
+            "owner",
+            "number",
+            "status",
+            "owner_comment",
+            "admin_comment",
+            "created_at",
+        ]
+        read_only_fields = ["status", "admin_comment", "created_at"]

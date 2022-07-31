@@ -1,14 +1,16 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import ProductCard, ProductComment, Pictures
+from .models import ProductCard, ProductComment, Pictures, Order
 from django.views.generic.base import View
 from .forms import AddProductComment
-from .serializers import ProductCardSerializer, ProductCommentSerializer
+from .serializers import ProductCardSerializer, ProductCommentSerializer, OrderSerializer
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.permissions import IsAuthenticated
 
 
 class ProductView(ListView):
@@ -34,14 +36,16 @@ class ProductDetailView(View):
         return render(request, "store/product.html", context)
 
 
-class StoreApiView(ListModelMixin, GenericViewSet):
+class StoreApiView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = ProductCard.objects.all()
     serializer_class = ProductCardSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['brand', 'price']
+    search_fields = ['name']
 
     @action(detail=True, methods=['post'])
     def like_as_active(self, request, pk=None):
         prod = self.get_object()
-        print("!!! prod = ", prod)
         prod.like += 1
         prod.save()
         serializer = self.get_serializer(prod)
@@ -62,5 +66,9 @@ class CommentApiView(ModelViewSet):
         return ProductComment.objects.filter(text_author=user)
 
 
-
+class OrderApiView(ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    # permission_classes = [IsAuthenticated]
+    # http_method_names = ['get', 'post']
 

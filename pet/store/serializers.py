@@ -24,7 +24,7 @@ class ProductCardSerializer(serializers.ModelSerializer):
             "attributes",
             "like",
         ]
-        read_only_fields = ["created_at", "moderated_at"]
+        read_only_fields = ["like", "created_at", "moderated_at"]
 
 
 class ProductCommentSerializer(serializers.ModelSerializer):

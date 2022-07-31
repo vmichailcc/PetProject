@@ -38,6 +38,15 @@ class StoreApiView(ListModelMixin, GenericViewSet):
     queryset = ProductCard.objects.all()
     serializer_class = ProductCardSerializer
 
+    @action(detail=True, methods=['post'])
+    def like_as_active(self, request, pk=None):
+        prod = self.get_object()
+        print("!!! prod = ", prod)
+        prod.like += 1
+        prod.save()
+        serializer = self.get_serializer(prod)
+        return Response(serializer.data)
+
 
 class CommentApiView(ModelViewSet):
     serializer_class = ProductCommentSerializer
@@ -53,16 +62,5 @@ class CommentApiView(ModelViewSet):
         return ProductComment.objects.filter(text_author=user)
 
 
-class LikeApiView(ModelViewSet):
-    serializer_class = ProductCardSerializer
-    queryset = ProductCard.objects.all()
-    http_method_names = ['get', 'post']
 
-    @action(detail=True, methods=['post'])
-    def like_as_active(self, request, pk=None):
-        prod = self.get_object()
-        print("!!! prod = ", prod)
-        prod.like += 1
-        prod.save()
-        serializer = self.get_serializer(prod)
-        return Response(serializer.data)
+

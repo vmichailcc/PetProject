@@ -68,7 +68,30 @@ class CommentApiView(ModelViewSet):
 
 class OrderApiView(ModelViewSet):
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
-    # permission_classes = [IsAuthenticated]
-    # http_method_names = ['get', 'post']
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'post']
 
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            serializer.save(**{'owner': self.request.user})
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(owner=user)
+
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+class ExampleView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        content = {
+            'email': str(request.user),  # `django.contrib.auth.User` instance.
+            'auth': str(request.auth),  # None
+        }
+        return Response(content)

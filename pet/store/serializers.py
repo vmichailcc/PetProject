@@ -53,4 +53,4 @@ class OrderSerializer(serializers.ModelSerializer):
             "admin_comment",
             "created_at",
         ]
-        read_only_fields = ["status", "admin_comment", "created_at"]
+        read_only_fields = ["owner", "status", "admin_comment", "created_at"]

@@ -4,6 +4,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, UpdateView
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .forms import UserRegisterForm, UserLoginForm
@@ -14,6 +18,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from .models import CustomUser
+from .serializers import CustomUserSerializer
 
 
 class Register(View):
@@ -95,10 +100,6 @@ class ProfileView(TemplateView):
     template_name = 'accounts/profile.html'
 
 
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
-
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -112,3 +113,17 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+
+class OrderApiView(ModelViewSet):
+    serializer_class = CustomUserSerializer
+    # permission_classes = [IsAuthenticated]
+    # http_method_names = ['get', 'post']
+
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            serializer.save(**{'username': self.request.user})
+
+    def get_queryset(self):
+        user = self.request.user
+        return CustomUser.objects.filter(username=user)
+

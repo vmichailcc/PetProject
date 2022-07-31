@@ -44,7 +44,8 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=254, unique=True)
     username = models.CharField(max_length=254, null=True)
     email_verify = models.BooleanField(default=False)
-    send_email = models.BooleanField(default=False)
+    send_ads_email = models.BooleanField(default=False)
+    send_status_email = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

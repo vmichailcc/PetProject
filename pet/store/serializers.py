@@ -27,6 +27,22 @@ class ProductCardSerializer(serializers.ModelSerializer):
         read_only_fields = ["like", "created_at", "moderated_at"]
 
 
+# class ProductListSerializer(serializers.ListSerializer):
+#     child = ""
+#
+#     class Meta:
+#         model = ProductCard
+#         fields = [
+#             "name",
+#             "price",
+#             "description",
+#             "brand",
+#             "main_picture",
+#             "like",
+#         ]
+#         read_only_fields = ["like"]
+
+
 class ProductCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -45,6 +61,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
+            "id",
             "product",
             "owner",
             "number",

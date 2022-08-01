@@ -42,10 +42,10 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(verbose_name="Прізвище", max_length=100)
     city = models.CharField(verbose_name="Місто", max_length=100)
     email = models.EmailField(max_length=254, unique=True)
-    username = models.CharField(max_length=254, null=True)
-    email_verify = models.BooleanField(default=False)
-    send_ads_email = models.BooleanField(default=False)
-    send_status_email = models.BooleanField(default=False)
+    username = models.CharField(max_length=254, null=True, blank=True)
+    email_verify = models.BooleanField(default=0)
+    send_ads_email = models.BooleanField(default=0)
+    send_status_email = models.BooleanField(default=0)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

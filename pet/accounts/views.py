@@ -6,9 +6,11 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, UpdateView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import action
+from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth import login as auth_login
@@ -72,7 +74,7 @@ class VerifyEmail(View):
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
         if user is not None and token_generator.check_token(user, token):
-            user.email_verify = True
+            user.email_verify = 1
             user.save()
             login(request, user)
             return redirect('index')
@@ -114,16 +116,25 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email
         })
 
-class OrderApiView(ModelViewSet):
+
+class CustomUserApiView(ModelViewSet):
+    serializer = CustomUserSerializer
     serializer_class = CustomUserSerializer
-    # permission_classes = [IsAuthenticated]
-    # http_method_names = ['get', 'post']
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-            serializer.save(**{'username': self.request.user})
+            serializer.save(**{'email': self.request.user.email})
 
     def get_queryset(self):
-        user = self.request.user
-        return CustomUser.objects.filter(username=user)
+        email = self.request.user.email
+        return CustomUser.objects.filter(email=email)
 
+    @action(detail=True, methods=['post'])
+    def mark_status_email(self, request, pk=None):
+        mark = self.get_object()
+        mark.send_status_email = 1
+        mark.save()
+        serializer = self.get_serializer(mark)
+        return Response(serializer.data)

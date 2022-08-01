@@ -78,5 +78,3 @@ class OrderApiView(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Order.objects.filter(owner=user)
-
-

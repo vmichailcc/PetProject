@@ -19,11 +19,21 @@ class ProductCardAdmin(admin.ModelAdmin):
     get_image.short_description = "Фото"
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ("id", "status", "created_at", "owner", )
+    list_filter = ("status", )
+    search_fields = ["id"]
+
+
 admin.site.register(ProductCard, ProductCardAdmin)
 admin.site.register(Category)
 admin.site.register(Pictures)
 admin.site.register(ProductComment)
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)
+
+
+
+
 
 admin.site.site_title = "STORE Адмін панель"
 admin.site.site_header = "STORE Адмін панель"

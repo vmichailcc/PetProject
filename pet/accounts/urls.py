@@ -3,7 +3,7 @@ from . import views
 from rest_framework import routers
 
 user_router = routers.SimpleRouter()
-user_router.register('', views.OrderApiView, basename='custom_user')
+user_router.register('', views.CustomUserApiView, basename='custom_user')
 
 urlpatterns = [
     path('update_profile/<int:pk>/', views.UpdateProfileView.as_view(), name='update_profile'),

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import ProductCard, Category, Pictures, ProductComment, Order
+from .models import ProductCard, Pictures, ProductComment, Order
 
 
 class ProductCardAdmin(admin.ModelAdmin):
@@ -20,19 +20,18 @@ class ProductCardAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "status", "created_at", "owner", )
+    list_display = ("order_number", "status", "created_at", "owner", )
     list_filter = ("status", )
-    search_fields = ["id"]
+    search_fields = ["order_number"]
+
+    fields = ("order_number", ("product", "quantity"), "owner_comment", "status", "admin_comment", "owner")
+    readonly_fields = ("owner", "order_number")
 
 
 admin.site.register(ProductCard, ProductCardAdmin)
-admin.site.register(Category)
 admin.site.register(Pictures)
 admin.site.register(ProductComment)
 admin.site.register(Order, OrderAdmin)
-
-
-
 
 
 admin.site.site_title = "STORE Адмін панель"

@@ -2,12 +2,13 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+from .utils import create_new_ref_number
 
 
 class ProductCard(models.Model):
     id = models.CharField(verbose_name="ID", primary_key=True, max_length=100)
     name = models.CharField(verbose_name="Назва", max_length=200)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, null=True, verbose_name="Категорія")
+    category = models.CharField(max_length=200, verbose_name="Категорія")
     vendor_code = models.CharField(verbose_name="Код товара", max_length=200)
     price = models.PositiveIntegerField(verbose_name="Ціна")
     old_price = models.IntegerField(default=0, verbose_name="Стара ціна")
@@ -34,21 +35,6 @@ class ProductCard(models.Model):
         return reverse("view_card", kwargs={"pk": self.pk})
 
 
-class Category(models.Model):
-    category_id = models.CharField(verbose_name="ID категорії", primary_key=True, max_length=100)
-    category_name = models.CharField(verbose_name="Назва категорії", max_length=200)
-
-    def __str__(self):
-        return self.category_name
-
-    def get_absolute_url(self):
-        return reverse("category", kwargs={"pk": self.pk})
-
-    class Meta:
-        verbose_name = "Категорія"
-        verbose_name_plural = "Категорії"
-
-
 class Pictures(models.Model):
     pictures_point = models.ForeignKey(
         ProductCard, on_delete=models.CASCADE,
@@ -68,12 +54,12 @@ class Pictures(models.Model):
 class ProductComment(models.Model):
     text_product = models.ForeignKey(ProductCard,
                                      on_delete=models.CASCADE,
-                                     verbose_name="text_product",
+                                     verbose_name="Продукт",
                                      related_name='text_product'
                                      )
     text_author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     on_delete=models.CASCADE,
-                                    verbose_name="text_author",
+                                    verbose_name="Автор",
                                     related_name='text_author'
                                     )
     text = models.TextField(verbose_name="Комментар", max_length=1000)
@@ -81,22 +67,32 @@ class ProductComment(models.Model):
 
 
 class Order(models.Model):
-    product = models.ForeignKey(ProductCard,
-                                on_delete=models.CASCADE,
-                                verbose_name="product",
-                                related_name='product'
-                                )
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE,
-                              verbose_name="owner",
-                              related_name='owner'
-                              )
-    number = models.PositiveIntegerField(verbose_name="Кількість",
-                                         default=1,
-                                         validators=[
-                                             MaxValueValidator(99),
-                                             MinValueValidator(1)
-                                         ])
+    product = models.ForeignKey(
+        ProductCard,
+        on_delete=models.CASCADE,
+        verbose_name="Товар",
+        related_name='product'
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Покупець",
+        related_name='owner',
+    )
+    order_number = models.CharField(
+        verbose_name="Номер замовлення",
+        max_length=10,
+        blank=True,
+        editable=False,
+        unique=True,
+        default=create_new_ref_number)
+    quantity = models.PositiveIntegerField(
+        verbose_name="Кількість",
+        default=1,
+        validators=[
+            MaxValueValidator(99),
+            MinValueValidator(1)
+        ])
     status = models.CharField(
         choices=(
             ("new", "Новий"),
@@ -106,7 +102,8 @@ class Order(models.Model):
             ("completed", "Завершено"),
         ),
         max_length=11,
-        default="new"
+        default="new",
+        verbose_name="Статус"
     )
     owner_comment = models.CharField(verbose_name="Коментар покупця", max_length=500, blank=True)
     admin_comment = models.CharField(verbose_name="Коментар від адміна", max_length=500, blank=True)

@@ -56,13 +56,3 @@ class UserLoginForm(AuthenticationForm):
             )
 
 
-
-# class UpdateUserForm(forms.ModelForm):
-#     first_name = forms.CharField(label="Ім'я", widget=forms.TextInput(attrs={'class': 'form-control'}), )
-#     last_name = forms.CharField(label="Прізвище", widget=forms.TextInput(attrs={'class': 'form-control'}))
-#     city = forms.CharField(label="Місто", widget=forms.TextInput(attrs={'class': 'form-control'}))
-#
-#     class Meta:
-#         model = CustomUser
-#         fields = ("first_name", "last_name", "city")
-

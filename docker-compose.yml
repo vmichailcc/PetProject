@@ -18,6 +18,6 @@ services:
     environment:
       - POSTGRES_USER=pet_project
       - POSTGRES_PASSWORD=pet_project_pass
-      - POSTGRES_DB=pet_project_dev
+      - POSTGRES_DB=pet_project_db_1
 volumes:
   postgres_data:

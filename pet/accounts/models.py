@@ -44,7 +44,6 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=254, unique=True)
     username = models.CharField(max_length=254, null=True, blank=True)
     email_verify = models.BooleanField(default=0)
-    send_ads_email = models.BooleanField(default=0)
     send_status_email = models.BooleanField(default=0)
 
     USERNAME_FIELD = 'email'
@@ -57,3 +56,8 @@ class CustomUser(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('profile')
+
+
+class MailingList(models.Model):
+    email = models.EmailField(max_length=254, unique=True)
+    send_ads_email = models.BooleanField(default=0)

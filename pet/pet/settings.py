@@ -30,7 +30,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # for docker
 DEBUG = int(os.environ.get("DEBUG", default=0))
+
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+
 # Application definition
 
 INSTALLED_APPS = [

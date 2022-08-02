@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+from django.db.models import Sum, Count
 from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,6 +14,7 @@ from .serializers import ProductCardSerializer, ProductCommentSerializer, OrderS
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated
+from accounts.models import CustomUser
 
 
 class ProductView(ListView):
@@ -36,6 +40,8 @@ class ProductDetailView(View):
         return render(request, "store/product.html", context)
 
 
+
+
 class StoreApiView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = ProductCard.objects.all()
     serializer_class = ProductCardSerializer
@@ -44,7 +50,7 @@ class StoreApiView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     search_fields = ['name']
 
     @action(detail=True, methods=['post'])
-    def like_as_active(self, request, pk=None):
+    def add_like(self, request, pk=None):
         prod = self.get_object()
         prod.like += 1
         prod.save()
@@ -78,3 +84,30 @@ class OrderApiView(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Order.objects.filter(owner=user)
+
+
+class DashboardView(View):
+
+    def get(self, request):
+        user_count = CustomUser.objects.count()
+        user_count_last_week = CustomUser.objects.filter(
+            date_joined__range=[datetime.now() - timedelta(weeks=1), datetime.now()]
+        ).count()
+        orders_count = Order.objects.count()
+        orders_count_last_week = Order.objects.filter(
+            created_at__range=[datetime.now() - timedelta(weeks=1), datetime.now()]
+        ).count()
+        products_count = ProductCard.objects.count()
+        likes = ProductCard.objects.aggregate(Sum('like'))
+        comments = len(ProductComment.objects.annotate(Count('text')))
+
+        context = {
+            "user_count": user_count,
+            "user_count_last_week": user_count_last_week,
+            "orders_count": orders_count,
+            "orders_count_last_week": orders_count_last_week,
+            "products_count": products_count,
+            "likes": likes['like__sum'],
+            "comments": comments,
+        }
+        return render(request, "store/dashboard.html", context)

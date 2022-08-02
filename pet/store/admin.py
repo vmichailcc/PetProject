@@ -28,9 +28,13 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ("owner", "order_number")
 
 
+class ProductCommentAdmin(admin.ModelAdmin):
+    list_display = ("text_product", "text_author", "text", "text_created_at", )
+
+
 admin.site.register(ProductCard, ProductCardAdmin)
 admin.site.register(Pictures)
-admin.site.register(ProductComment)
+admin.site.register(ProductComment, ProductCommentAdmin)
 admin.site.register(Order, OrderAdmin)
 
 

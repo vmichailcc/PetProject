@@ -2,16 +2,6 @@ from django.contrib import admin
 from .models import CustomUser
 from store.models import Order
 
-
-'''
-Список всіх користувачів які зареєструвались на сайті:
--	Ім'я;
--	Прізвище;
--	Місто;
--	Кількість замовлень. Пошук по імені і прізвищу.
-'''
-
-
 class OrderInline(admin.TabularInline):
     model = Order
     readonly_fields = ("order_number", "status",)

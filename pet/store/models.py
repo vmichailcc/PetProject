@@ -65,6 +65,10 @@ class ProductComment(models.Model):
     text = models.TextField(verbose_name="Комментар", max_length=1000)
     text_created_at = models.DateTimeField(verbose_name="Час створення", auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Коментар"
+        verbose_name_plural = "Коментарі"
+
 
 class Order(models.Model):
     product = models.ForeignKey(

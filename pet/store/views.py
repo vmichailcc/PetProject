@@ -1,20 +1,20 @@
 from datetime import datetime, timedelta
-
 from django.db.models import Sum, Count
-from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView
+from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.decorators import action
-from rest_framework.response import Response
-from .models import ProductCard, ProductComment, Pictures, Order
-from django.views.generic.base import View
-from .forms import AddProductComment
-from .serializers import ProductCardSerializer, ProductCommentSerializer, OrderSerializer
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from accounts.models import CustomUser
+from .forms import AddProductComment
+from .models import ProductCard, ProductComment, Pictures, Order
+from .serializers import ProductCardSerializer, ProductCommentSerializer, OrderSerializer, ProductCardDetailSerializer,\
+    OrderDetailSerializer
 
 
 class ProductView(ListView):
@@ -40,14 +40,17 @@ class ProductDetailView(View):
         return render(request, "store/product.html", context)
 
 
-
-
-class StoreApiView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class StoreApiView(ListModelMixin, GenericViewSet):
     queryset = ProductCard.objects.all()
     serializer_class = ProductCardSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['brand', 'price']
     search_fields = ['name']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(comments=Count('text_product'))
+        return queryset
 
     @action(detail=True, methods=['post'])
     def add_like(self, request, pk=None):
@@ -58,10 +61,18 @@ class StoreApiView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class CommentApiView(ModelViewSet):
+class ProductDetailApiView(RetrieveModelMixin, GenericViewSet):
+    serializer_class = ProductCardDetailSerializer
+    queryset = ProductCard.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(comments=Count('text_product'))
+        return queryset
+
+class CommentApiView(CreateModelMixin, GenericViewSet):
     serializer_class = ProductCommentSerializer
     permission_classes = [IsAuthenticated]
-    http_method_names = ['get', 'post']
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
@@ -72,10 +83,11 @@ class CommentApiView(ModelViewSet):
         return ProductComment.objects.filter(text_author=user)
 
 
-class OrderApiView(ModelViewSet):
+class OrderApiView(ListModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
-    http_method_names = ['get', 'post']
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['status']
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
@@ -84,6 +96,11 @@ class OrderApiView(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Order.objects.filter(owner=user)
+
+
+class OrderDetailApiView(RetrieveModelMixin, GenericViewSet):
+    serializer_class = OrderDetailSerializer
+    queryset = Order.objects.all()
 
 
 class DashboardView(View):

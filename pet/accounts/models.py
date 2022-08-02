@@ -60,4 +60,4 @@ class CustomUser(AbstractUser):
 
 class MailingList(models.Model):
     email = models.EmailField(max_length=254, unique=True)
-    send_ads_email = models.BooleanField(default=0)
+    send_ads_email = models.BooleanField(default=1)

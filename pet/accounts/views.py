@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, UpdateView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
+from rest_framework.mixins import RetrieveModelMixin, ListModelMixin, CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -20,7 +20,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, MailingListSerializer
 
 
 class Register(View):
@@ -138,3 +138,8 @@ class CustomUserApiView(ModelViewSet):
         mark.save()
         serializer = self.get_serializer(mark)
         return Response(serializer.data)
+
+
+class MailingListApiView(CreateModelMixin, GenericViewSet):
+    serializer_class = MailingListSerializer
+

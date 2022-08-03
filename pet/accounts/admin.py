@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import CustomUser
 from store.models import Order
 
+
 class OrderInline(admin.TabularInline):
     model = Order
     readonly_fields = ("order_number", "status",)
@@ -9,11 +10,10 @@ class OrderInline(admin.TabularInline):
     extra = 0
 
 
-
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ("email", "first_name", "last_name", "city", "order_count")
+    list_display = ("email", "first_name", "last_name",  "city", "order_count")
     search_fields = ["first_name", "last_name"]
-    fields = ("first_name", "last_name", "city",)
+    fields = ("first_name", "last_name", "city", "block",)
     inlines = [
         OrderInline,
     ]

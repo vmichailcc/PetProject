@@ -7,9 +7,11 @@ import requests
 import json
 from store.models import ProductCard, Pictures
 from pet.hidden_data import auth_data
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet.settings')
-django.setup()
 
+from celery import shared_task, app
+
+
+@shared_task
 def data_input():
     response = {}
     auth_url = "https://office.hubber.pro/api/v1/auth"
@@ -83,4 +85,18 @@ def data_input():
     print(response)
 
 
-data_input()
+# @app.task
+# def send_post_creation_email(subscriber_id, subject, message):
+#     UserModel = get_user_model()
+#
+#     try:
+#         subscriber = UserModel.objects.get(pk=subscriber_id)
+#     except UserModel.DoesNotExist:
+#         logging.warning(f'Tried to send verification email to '
+#                         f'non-existing user `{subscriber}`')
+#     send_mail(
+#         subject,
+#         message,
+#         'from@quickpublisher.dev',
+#         [subscriber.email],
+#         fail_silently=False,)

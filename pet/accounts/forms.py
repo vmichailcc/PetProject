@@ -22,6 +22,26 @@ class UserRegisterForm(UserCreationForm):
 
 class UserLoginForm(AuthenticationForm):
 
+    def confirm_login_allowed(self, user):
+
+        if user.block:
+            raise ValidationError(
+                "Аккаунт заблоковано!"
+            )
+
+        if not user.is_active:
+            raise ValidationError(
+                self.error_messages["inactive"],
+                code="inactive",
+            )
+
+        if not user.email_verify:
+            send_verify_email(self.request, user)
+            raise ValidationError(
+                "Електронна пошта не веріфікована. Будь ласка, перевірте пошту!",
+                code='invalid_login'
+            )
+
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
@@ -40,19 +60,6 @@ class UserLoginForm(AuthenticationForm):
 
         return self.cleaned_data
 
-    def confirm_login_allowed(self, user):
 
-        if not user.is_active:
-            raise ValidationError(
-                self.error_messages["inactive"],
-                code="inactive",
-            )
-
-        if not user.email_verify:
-            send_verify_email(self.request, user)
-            raise ValidationError(
-                "Електронна пошта не веріфікована. Будь ласка, перевірте пошту!",
-                code='invalid_login'
-            )
 
 

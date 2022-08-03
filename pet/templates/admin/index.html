@@ -12,13 +12,8 @@
 {% block nav-sidebar %}{% endblock %}
 
 {% block content %}
-<div>
-<h3><a href="{% url 'dashboard' %}">Dashboard</a></h3>
-    <br>
-</div>
 
 <div id="content-main">
-
   {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
 </div>
 {% endblock %}
@@ -52,5 +47,8 @@
             </ul>
             {% endif %}
     </div>
+</div>
+<div>
+{% include "./dashboard.html" %}
 </div>
 {% endblock %}

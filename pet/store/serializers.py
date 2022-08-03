@@ -1,6 +1,6 @@
 from django.db.models import Count
 from rest_framework import serializers
-from store.models import ProductCard, ProductComment, Order
+from store.models import ProductCard, ProductComment, Order, Pictures
 
 
 class ProductCardSerializer(serializers.ModelSerializer):
@@ -25,10 +25,26 @@ class ProductCardSerializer(serializers.ModelSerializer):
         return len(obj.comments)
 
 
+class PicturesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pictures
+        fields = ["pictures"]
+        # read_only_fields = ["pictures"]
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductComment
+        fields = [
+            "text",
+        ]
+
+
 class ProductCardDetailSerializer(serializers.ModelSerializer):
-    comments = serializers.CharField()
-    comments_count = serializers.IntegerField(default=0)
-    pictures = serializers.ImageField(default=0)
+    pictures = PicturesSerializer(many=True, read_only=True)
+    text_product = CommentSerializer(many=True, read_only=True)
+    comments_count = serializers.IntegerField()
 
     class Meta:
         model = ProductCard
@@ -39,13 +55,23 @@ class ProductCardDetailSerializer(serializers.ModelSerializer):
             "main_picture",
             "pictures",
             "comments_count",
-            "comments",
+            "text_product",
             "like",
         ]
-        read_only_fields = ["like"]
+        read_only_fields = [
+            "name",
+            "description",
+            "brand",
+            "main_picture",
+            "pictures",
+            "comments_count",
+            "text_product",
+            "like",
+        ]
 
-    def get_comments(self, obj):
-        return len(obj.comments)
+    def get_comments_count(self, obj):
+        return len(obj.comments_count)
+
 
 class ProductCommentSerializer(serializers.ModelSerializer):
 
@@ -75,6 +101,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     product = serializers.CharField()
+
     class Meta:
         model = Order
         fields = [

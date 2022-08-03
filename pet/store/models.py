@@ -39,7 +39,7 @@ class Pictures(models.Model):
     pictures_point = models.ForeignKey(
         ProductCard, on_delete=models.CASCADE,
         verbose_name="Назва товару що зображен",
-        related_name="image",
+        related_name="pictures",
     )
     pictures = models.ImageField(blank=True, upload_to="uploadphoto/%d%m%Y/", verbose_name="Назва зображення")
 
@@ -49,6 +49,9 @@ class Pictures(models.Model):
     class Meta:
         verbose_name = "Зображення"
         verbose_name_plural = "Зображення"
+
+    def __str__(self):
+        return self.pictures
 
 
 class ProductComment(models.Model):

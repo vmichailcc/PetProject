@@ -67,8 +67,9 @@ class ProductDetailApiView(RetrieveModelMixin, GenericViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.annotate(comments=Count('text_product'))
+        queryset = queryset.annotate(comments_count=Count('text_product'))
         return queryset
+
 
 class CommentApiView(CreateModelMixin, GenericViewSet):
     serializer_class = ProductCommentSerializer
@@ -127,4 +128,4 @@ class DashboardView(View):
             "likes": likes['like__sum'],
             "comments": comments,
         }
-        return render(request, "store/dashboard.html", context)
+        return render(request, "admin/dashboard.html", context)

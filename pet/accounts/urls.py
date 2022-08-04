@@ -18,4 +18,5 @@ urlpatterns = [
     path('confirm_email/', views.ConfirmView.as_view(), name='confirm_email'),
     path('accounts/profile/', views.ProfileView.as_view(), name='profile'),
     path("verify_email/<uidb64>/<token>/", views.VerifyEmail.as_view(), name="verify_email"),
+    path("send_celery/", views.celery_email, name="celery_email")
 ]

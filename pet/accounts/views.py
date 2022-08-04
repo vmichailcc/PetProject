@@ -1,6 +1,6 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, UpdateView
@@ -143,3 +143,10 @@ class CustomUserApiView(ModelViewSet):
 class MailingListApiView(CreateModelMixin, GenericViewSet):
     serializer_class = MailingListSerializer
 
+
+from .tasks import send_status_email
+
+
+def celery_email(request):
+    send_status_email()
+    return HttpResponse("Go!")

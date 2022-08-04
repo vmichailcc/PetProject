@@ -9,8 +9,6 @@ services:
     build: .
     volumes:
       - ./media:/media
-    command: celery -A pet worker -l INFO
-
 
 
   web:

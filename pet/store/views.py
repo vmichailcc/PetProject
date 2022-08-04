@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django.db.models import Sum, Count
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.base import View
@@ -13,7 +14,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from accounts.models import CustomUser
 from .forms import AddProductComment
 from .models import ProductCard, ProductComment, Pictures, Order
-from .serializers import ProductCardSerializer, ProductCommentSerializer, OrderSerializer, ProductCardDetailSerializer,\
+from .serializers import ProductCardSerializer, ProductCommentSerializer, OrderSerializer, ProductCardDetailSerializer, \
     OrderDetailSerializer
 
 
@@ -129,3 +130,9 @@ class DashboardView(View):
             "comments": comments,
         }
         return render(request, "admin/dashboard.html", context)
+
+
+
+
+
+

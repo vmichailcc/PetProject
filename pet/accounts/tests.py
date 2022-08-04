@@ -1,3 +1,16 @@
-from django.test import TestCase
+from django.urls import reverse
+from rest_framework.test import APITestCase
 
-# Create your tests here.
+
+# class AddCommentTestCase(APITestCase):
+#     def test_post(self):
+#
+#
+#         url = reverse("comment_router-list")
+#         print(url)
+#         response = self.client.get(url)
+#         print(response.data)
+
+
+class OrderApiTestCase(APITestCase):
+    pass

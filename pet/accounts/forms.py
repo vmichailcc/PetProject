@@ -23,7 +23,7 @@ class UserRegisterForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
 
     def confirm_login_allowed(self, user):
-
+        raise Exception("sdf")
         if user.block:
             raise ValidationError(
                 "Аккаунт заблоковано!"

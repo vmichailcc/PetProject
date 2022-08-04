@@ -176,16 +176,19 @@ class StoreTests(APITestCase):
         response = self.client.post(url, data, format('json'))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_order_list_filter_status_neg(self):
-        response = self.client.get(
-            reverse('store_router-list'), {"status": "in progress"}
-        )
-        assert len(response.data['results']) == 0
-
     def test_order_list_filter_status_pos(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.user_token.key)
+        url = reverse('order_router-list')
+        data = {
+            "product": "8888Qwerty",
+            "quantity": "1"
+        }
+        response1 = self.client.post(url, data, format('json'))
+
         response = self.client.get(
             reverse('store_router-list'), {"status": "new"}
         )
+
         assert len(response.data['results']) == 1
 
     def test_view_product_detail_pos(self):

@@ -21,57 +21,59 @@ def data_input():
     product_url = "http://office.hubber.pro/ru/api/v1/product/index?page=1&limit=100"
     product_response = requests.get(url=product_url, headers=headers)
     pagination_page_number = int(product_response.headers['x-pagination-page-count'])
-    print("pagination_page_number =", pagination_page_number)
+    # print("pagination_page_number =", pagination_page_number)
     # r_status = product_response.status_code
     count = 0
-    page_number = 1
+    page_number = 56
     while page_number <= pagination_page_number:
-    # if r_status == 200:
+        # if r_status == 200:
         product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
+        print("Page -", page_number, "from", pagination_page_number)
         page_number += 1
         product_response = requests.get(url=product_url, headers=headers)
         r_status = product_response.status_code
-        print("Page -", page_number, "**" * 5, "Status -", r_status)
+        print("\t Status -", r_status)
+
         products_response = product_response.json()
         upload_data_str = json.dumps(products_response)
         upload_data = json.loads(upload_data_str)
+        # print("upload_data =", upload_data)
         for data in upload_data:
             if data.get("name") is not None:
-                data_id = data.get("id")
-                if ProductCard.objects.get(data_id) == data_id:
-                    product = ProductCard(
-                        id=data.get("id"),
-                        name=data.get("name"),
-                        category=data.get("category_name"),
-                        vendor_code=data.get("vendor_code"),
-                        price=data.get("price"),
-                        old_price=data.get("old_price"),
-                        availability=data.get("availability"),
-                        description=data.get("description"),
-                        brand=data.get("brand"),
-                        main_picture=data.get("main_picture"),
-                        options=data.get("options"),
-                        attributes=data.get("attributes"),
-                    )
-                    product.save()
-                else:
-                    product = ProductCard.objects.get(pk=data.get("id"))
-                    product.name = data.get("name")
+                print(data.get("id"), "\n***")
+                # if ProductCard.objects.get(pk=data.get("id")) != data.get("id"):
+                    # print("ProductCard.objects.get(data_id) =", ProductCard.objects.get(data.get("id")))
+                    # print("data_id =", data.get("id"))
+                # product = ProductCard(
+                #     id=data.get("id"),
+                #     name=data.get("name"),
+                #     category=data.get("category_name"),
+                #     vendor_code=data.get("vendor_code"),
+                #     price=data.get("price"),
+                #     old_price=data.get("old_price"),
+                #     availability=data.get("availability"),
+                #     description=data.get("description"),
+                #     brand=data.get("brand"),
+                #     main_picture=data.get("main_picture"),
+                #     options=data.get("options"),
+                #     attributes=data.get("attributes"),
+                # )
+                # product.save()
+                # else:
+                product = ProductCard.objects.get(pk=data.get("id"))
+                product.name = data.get("name")
+                product.category = data.get("category_name"),
+                product.vendor_code = data.get("vendor_code"),
+                product.price = data.get("price"),
+                product.old_price = data.get("old_price"),
+                product.availability = data.get("availability"),
+                product.description = data.get("description"),
+                product.brand = data.get("brand"),
+                product.main_picture = data.get("main_picture"),
+                product.options = data.get("options"),
+                product.attributes = data.get("attributes"),
 
-                        id=data.get("id"),
-                        name=data.get("name"),
-                        category=data.get("category_name"),
-                        vendor_code=data.get("vendor_code"),
-                        price=data.get("price"),
-                        old_price=data.get("old_price"),
-                        availability=data.get("availability"),
-                        description=data.get("description"),
-                        brand=data.get("brand"),
-                        main_picture=data.get("main_picture"),
-                        options=data.get("options"),
-                        attributes=data.get("attributes"),
-                    )
-                    product.save()
+                product.save()
                 for input_image in data.get("pictures"):
                     image = Pictures(
                         pictures_point=product,

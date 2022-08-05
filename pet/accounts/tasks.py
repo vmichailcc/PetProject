@@ -5,11 +5,11 @@ from django.core.mail import EmailMessage
 
 
 @shared_task
-def send_status_email():
+def send_status_email_celery():
     email = EmailMessage(
         "Selery task worker",
         "this is proof",
-        to=["var-m@meta.ua"]
+        to=["vmichail2022@gmail.com"]
     )
     email.send()
 

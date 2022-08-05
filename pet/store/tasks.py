@@ -1,13 +1,13 @@
 from celery import shared_task
 
 
-@shared_task
-def sample_task():
-    print("Ukraine win!")
+# @shared_task
+# def sample_task():
+#     print("Ukraine win!")
 
 
 
-# @app.task
+# @shared_task
 # def data_input():
 #     response = {}
 #     auth_url = "https://office.hubber.pro/api/v1/auth"

@@ -5,13 +5,10 @@ services:
     restart: always
 
   worker:
-    restart: always
     build: .
+#    command: celery -A pet worker -B -l INFO
     volumes:
       -  ./pet:/pet
-
-
-
 
   web:
     build: .

@@ -18,14 +18,15 @@ def data_input():
         'Authorization': f"Bearer {token}",
         "accept-language": "uk-UA",
     }
-    product_url = "http://office.hubber.pro/ru/api/v1/product"
+    product_url = "http://office.hubber.pro/ru/api/v1/product/index?page=1&limit=100"
     product_response = requests.get(url=product_url, headers=headers)
-    r_status = product_response.status_code
+    pagination_page_number = int(product_response.headers['x-pagination-page-count'])
+    print("pagination_page_number =", pagination_page_number)
+    # r_status = product_response.status_code
     count = 0
-    page_number = 56
-    # while r_status == 200:
-    if r_status == 200:
-
+    page_number = 1
+    while page_number <= pagination_page_number:
+    # if r_status == 200:
         product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
         page_number += 1
         product_response = requests.get(url=product_url, headers=headers)
@@ -36,8 +37,10 @@ def data_input():
         upload_data = json.loads(upload_data_str)
         for data in upload_data:
             if data.get("name") is not None:
-                if id == data.get("id"):
+                data_id = data.get("id")
+                if ProductCard.objects.get(data_id) == data_id:
                     product = ProductCard(
+                        id=data.get("id"),
                         name=data.get("name"),
                         category=data.get("category_name"),
                         vendor_code=data.get("vendor_code"),
@@ -52,7 +55,9 @@ def data_input():
                     )
                     product.save()
                 else:
-                    product = ProductCard(
+                    product = ProductCard.objects.get(pk=data.get("id"))
+                    product.name = data.get("name")
+
                         id=data.get("id"),
                         name=data.get("name"),
                         category=data.get("category_name"),

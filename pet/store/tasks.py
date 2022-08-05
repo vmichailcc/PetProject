@@ -1,18 +1,9 @@
-import os
-import django
-from django.template.loader import render_to_string
+from celery import shared_task
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet.settings')
-django.setup()
 
-import requests
-import json
-from store.models import ProductCard, Pictures
-from pet.hidden_data import auth_data
-from celery import shared_task, app
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
-
+@shared_task
+def sample_task():
+    print("Ukraine win!")
 
 
 

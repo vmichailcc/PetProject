@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -135,7 +136,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'pet/static')
+    os.path.join(BASE_DIR, '/pet/pet/static')
 ]
 
 # Default primary key field type
@@ -149,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ROOT = os.path.dirname(__file__)
 
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -187,3 +188,11 @@ CACHES = {
 }
 
 CELERY_CACHE_BACKEND = 'default'
+
+
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "store.tasks.sample_task",
+        "schedule": crontab(minute="*/1"),
+    },
+}

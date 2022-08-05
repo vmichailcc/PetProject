@@ -144,10 +144,3 @@ class MailingListApiView(CreateModelMixin, GenericViewSet):
     serializer_class = MailingListSerializer
 
 
-from .tasks import send_status_email_celery
-
-
-def celery_email(request):
-    send_status_email_celery()
-    return HttpResponse("Go!")
-

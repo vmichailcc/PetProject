@@ -123,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'uk-ua'
 
 TIME_ZONE = 'Europe/Kiev'
+CELERY_TIMEZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -176,8 +177,6 @@ REST_FRAMEWORK = {
 }
 
 CELERY_BROKER_URL = 'redis://redis:6379'
-
-CELERY_RESULT_BACKEND = 'django-db'
 
 CACHES = {
     'default': {

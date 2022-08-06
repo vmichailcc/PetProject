@@ -32,7 +32,7 @@ def data_input():
     # r_status = product_response.status_code
     count = 0
     page_number = 1
-    while page_number <= pagination_page_number:
+    if page_number <= pagination_page_number:
         # if r_status == 200:
         try:
             product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"

@@ -85,7 +85,7 @@ class CommentApiView(CreateModelMixin, GenericViewSet):
         return ProductComment.objects.filter(text_author=user)
 
 
-class OrderApiView(ModelViewSet):
+class OrderApiView(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
@@ -93,11 +93,14 @@ class OrderApiView(ModelViewSet):
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-            serializer.save(**{'owner': self.request.user})
+            user = self.request.user
+            print("perform_create =", user)
+            serializer.save(**{'owner': user})
 
     def get_queryset(self):
         user = self.request.user
-        return Order.objects.filter(owner=user)
+        print(user.pk)
+        return Order.objects.filter(owner=user.pk)
 
 
 class OrderDetailApiView(RetrieveModelMixin, GenericViewSet):

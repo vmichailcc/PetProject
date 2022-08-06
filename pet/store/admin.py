@@ -6,9 +6,9 @@ from .models import ProductCard, Pictures, ProductComment, Order
 
 class ProductCardAdmin(admin.ModelAdmin):
     list_display = ("get_image", "name", "vendor_code", "brand",  "price", "old_price", "availability",
-                    "is_published", "card_views", "created_at", "moderated_at")
+                    "is_published", "card_views")
     list_filter = ("brand", "price", "availability", "is_published", "card_views")
-    list_editable = ("is_published",)
+    list_editable = ("is_published", "availability")
     search_fields = ["name", "description", "brand", "id"]
 
     def get_image(self, obj):

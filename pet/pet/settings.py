@@ -190,9 +190,13 @@ CACHES = {
 CELERY_CACHE_BACKEND = 'default'
 
 
-# CELERY_BEAT_SCHEDULE = {
-#     "sample_task": {
-#         "task": "store.tasks.sample_task",
-#         "schedule": crontab(minute="*/1"),
-#     },
-# }
+CELERY_BEAT_SCHEDULE = {
+    "data_input": {
+        "task": "store.tasks.data_input",
+        "schedule": crontab(minute=0, hour='*/4'),
+    },
+    "delete_data": {
+            "task": "store.tasks.delete_data",
+            "schedule": crontab(minute=0, hour='*/5'),
+        },
+}

@@ -14,7 +14,6 @@ class ProductCard(models.Model):
     old_price = models.IntegerField(default=0, verbose_name="Стара ціна")
     availability = models.BooleanField("Наявність", default=1)
     is_published = models.BooleanField("Публікація", default=1)
-    created_at = models.DateTimeField(verbose_name="Час створення", auto_now_add=True)
     moderated_at = models.DateTimeField(verbose_name="Час оновленя", auto_now=True)
     description = models.TextField(verbose_name="Опис", max_length=5000)
     brand = models.CharField(verbose_name="Бренд", max_length=150)

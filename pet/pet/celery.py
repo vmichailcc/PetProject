@@ -16,3 +16,4 @@ def debug_task(self):
 
 def shared_task():
     return None
+

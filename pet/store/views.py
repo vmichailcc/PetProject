@@ -85,7 +85,7 @@ class CommentApiView(CreateModelMixin, GenericViewSet):
         return ProductComment.objects.filter(text_author=user)
 
 
-class OrderApiView(ListModelMixin, CreateModelMixin, GenericViewSet):
+class OrderApiView(ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]

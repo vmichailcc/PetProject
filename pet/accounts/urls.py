@@ -8,7 +8,6 @@ user_router.register('', views.CustomUserApiView, basename='custom_user')
 mailing_router = routers.SimpleRouter()
 mailing_router.register('', views.MailingListApiView, basename='mailing_router')
 
-
 urlpatterns = [
     path('update_profile/<int:pk>/', views.UpdateProfileView.as_view(), name='update_profile'),
     path('login/', views.LoginUserView.as_view(), name='login'),

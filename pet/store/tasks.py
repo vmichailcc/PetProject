@@ -2,17 +2,11 @@ import os
 import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet.settings')
 django.setup()
-
 import requests
 import json
 from store.models import ProductCard, Pictures
 from pet.hidden_data import auth_data
 from celery import shared_task
-
-
-# @shared_task
-# def sample_task():
-#     print("Ukraine win!")
 
 
 @shared_task
@@ -84,7 +78,6 @@ def data_input():
         response['status'] = product_response.status_code
         response['message'] = 'success'
         response['count'] = count
-    # from store.store_input_data import data_input as d
     print(response)
 
 

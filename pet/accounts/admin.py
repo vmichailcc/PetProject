@@ -25,4 +25,4 @@ class CustomUserAdmin(admin.ModelAdmin):
     order_count.short_description = "Кількість замовлень"
 
 
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, CustomUserAdmin)

@@ -41,11 +41,11 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(verbose_name="Ім'я", max_length=100)
     last_name = models.CharField(verbose_name="Прізвище", max_length=100)
     city = models.CharField(verbose_name="Місто", max_length=100)
-    email = models.EmailField(max_length=254, unique=True)
+    email = models.EmailField(verbose_name="Електрона пошта", max_length=254, unique=True)
     username = models.CharField(max_length=254, null=True, blank=True)
-    block = models.BooleanField(default=0)
-    email_verify = models.BooleanField(default=0)
-    send_status_email = models.BooleanField(default=0)
+    block = models.BooleanField(verbose_name="Блокування користувача", default=0)
+    email_verify = models.BooleanField(verbose_name="Підтвердження ел. пошти", default=0)
+    send_status_email = models.BooleanField(verbose_name="Дозволети рекламну розсилку", default=0)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

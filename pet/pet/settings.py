@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     "imagekit",
-    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -193,10 +192,10 @@ CELERY_CACHE_BACKEND = 'default'
 CELERY_BEAT_SCHEDULE = {
     "data_input": {
         "task": "store.tasks.data_input",
-        "schedule": crontab(minute=0, hour='*/4'),
+        "schedule": crontab(minute=0, hour='0'),
     },
     "delete_data": {
             "task": "store.tasks.delete_data",
-            "schedule": crontab(minute=0, hour='*/5'),
+            "schedule": crontab(minute=0, hour='1'),
         },
 }

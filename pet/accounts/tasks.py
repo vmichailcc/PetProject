@@ -18,4 +18,6 @@ def send_status_email_celery(pk, order_status):
             email_message,
             to=[mail_recipient]
         )
+        print(email)
         email.send()
+

@@ -88,7 +88,6 @@ def data_input():
     print(response)
 
 
-
 # from store.models import ProductCard as pc
 
 

@@ -3,6 +3,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from .utils import create_new_ref_number
+from django.core.files import File
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
 
 
 class ProductCard(models.Model):
@@ -18,10 +21,19 @@ class ProductCard(models.Model):
     description = models.TextField(verbose_name="Опис", max_length=5000)
     brand = models.CharField(verbose_name="Бренд", max_length=150)
     main_picture = models.ImageField(verbose_name="Головне зображення", blank=True, upload_to="uploadphoto/%d%m%Y/")
+    main_picture_url = models.URLField()
     options = models.JSONField(verbose_name="Опції", blank=True, null=True)
     attributes = models.JSONField(verbose_name="Атрибути", blank=True, null=True)
     card_views = models.IntegerField(verbose_name="Перегляди", default=0)
     like = models.IntegerField(verbose_name="Лайк", default=0)
+
+    def save(self, *args, **kwargs):
+        if self.main_picture_url and not self.main_picture:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.main_picture_url).read())
+            img_temp.flush()
+            self.main_picture.save(f"image_{self.pk}.jpg", File(img_temp))
+        super(ProductCard, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -121,3 +133,6 @@ class Order(models.Model):
 
     def __str__(self):
         return self.order_number
+
+
+

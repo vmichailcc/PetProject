@@ -60,7 +60,7 @@ def data_input():
                             availability=data.get("availability"),
                             description=data.get("description"),
                             brand=data.get("brand"),
-                            main_picture=data.get("main_picture"),
+                            main_picture_url=data.get("main_picture"),
                             options=data.get("options"),
                             attributes=data.get("attributes"),
                         )

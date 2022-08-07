@@ -32,6 +32,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # for docker
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
+
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Application definition
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
     'django_filters',
-    "imagekit",
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -150,8 +151,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ROOT = os.path.dirname(__file__)
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -166,7 +168,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-THUMBNAIL_DEBUG = True
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -198,3 +200,11 @@ CELERY_BEAT_SCHEDULE = {
             "schedule": crontab(minute=0, hour='1'),
         },
 }
+
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (200, 200), 'crop': True},
+    },
+}
+THUMBNAIL_DEBUG = True

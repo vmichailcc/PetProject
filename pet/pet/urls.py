@@ -18,5 +18,6 @@ urlpatterns = [
     path('api/order_detail/', include(order_detail_router.urls)),
     path('api/profile/', include(user_router.urls)),
     path('api/mailing/', include(mailing_router.urls)),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

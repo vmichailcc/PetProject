@@ -15,8 +15,10 @@
           {% for product in products %}
 
           <div class="card" style="width: 16rem;">
-
-            <img src="{{ product.main_picture }}" alt="" />
+            <a href="{% url 'product' product.id %}">
+              {% load thumbnail %}
+            <img src="{{ product.main_picture|thumbnail_url:'avatar' }}" alt="" />
+            </a>
 
 
             <div class="card-body">

@@ -201,7 +201,6 @@ CELERY_BEAT_SCHEDULE = {
         },
 }
 
-
 THUMBNAIL_ALIASES = {
     '': {
         'avatar': {'size': (200, 200), 'crop': True},

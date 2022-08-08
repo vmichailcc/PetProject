@@ -78,8 +78,5 @@ admin.site = MyAdminSite()
 admin.site.register(ProductCard, ProductCardAdmin)
 admin.site.register(Pictures)
 admin.site.register(ProductComment, ProductCommentAdmin)
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)
 
-
-# admin.site.site_title = "STORE Адмін панель"
-# admin.site.site_header = "STORE Адмін панель"

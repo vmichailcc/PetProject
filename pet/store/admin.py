@@ -1,7 +1,10 @@
 from django.contrib import admin
+from django.template.response import TemplateResponse
 from django.utils.safestring import mark_safe
-
 from .models import ProductCard, Pictures, ProductComment, Order
+from datetime import datetime, timedelta
+from django.db.models import Sum, Count
+from accounts.models import CustomUser
 
 
 class ProductCardAdmin(admin.ModelAdmin):
@@ -32,11 +35,51 @@ class ProductCommentAdmin(admin.ModelAdmin):
     list_display = ("text_product", "text_author", "text", "text_created_at", )
 
 
+class MyAdminSite(admin.AdminSite):
+    site_title = "STORE Адмін панель"
+    site_header = "STORE Адмін панель"
+
+    def index(self, request, extra_context=None):
+        app_list = self.get_app_list(request)
+        user_count = CustomUser.objects.count()
+        user_count_last_week = CustomUser.objects.filter(
+            date_joined__range=[datetime.now() - timedelta(weeks=1), datetime.now()]
+        ).count()
+        orders_count = Order.objects.count()
+        orders_count_last_week = Order.objects.filter(
+            created_at__range=[datetime.now() - timedelta(weeks=1), datetime.now()]
+        ).count()
+        products_count = ProductCard.objects.count()
+        likes = ProductCard.objects.aggregate(Sum('like'))
+        comments = len(ProductComment.objects.annotate(Count('text')))
+        context = {
+            **self.each_context(request),
+            "title": self.index_title,
+            "subtitle": None,
+            "app_list": app_list,
+            **(extra_context or {}),
+            "user_count": user_count,
+            "user_count_last_week": user_count_last_week,
+            "orders_count": orders_count,
+            "orders_count_last_week": orders_count_last_week,
+            "products_count": products_count,
+            "likes": likes['like__sum'],
+            "comments": comments,
+        }
+
+        request.current_app = self.name
+
+        return TemplateResponse(
+            request, self.index_template or "admin/index.html", context
+        )
+
+
+admin.site = MyAdminSite()
 admin.site.register(ProductCard, ProductCardAdmin)
 admin.site.register(Pictures)
 admin.site.register(ProductComment, ProductCommentAdmin)
 admin.site.register(Order)
 
 
-admin.site.site_title = "STORE Адмін панель"
-admin.site.site_header = "STORE Адмін панель"
+# admin.site.site_title = "STORE Адмін панель"
+# admin.site.site_header = "STORE Адмін панель"
